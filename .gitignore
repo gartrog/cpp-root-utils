@@ -26,3 +26,9 @@
 *.exe
 *.out
 *.app
+
+# ROOT
+*.d
+
+# Python/PyROOT
+*.pyc
