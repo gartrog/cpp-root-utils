@@ -1,0 +1,27 @@
+
+template<class T>
+T* File::getObject(const std::string& name) {
+  T* obj = nullptr;
+  m_file->GetObject(name.c_str(), obj);
+  return obj;
+}
+
+template<class T>
+std::vector<T*> File::getObjects(const std::vector<std::string>& patterns) {
+  std::vector<TKey*> resKeys;
+  TClass* tClass = T::Class();
+  for(auto& p : patterns) {
+    findObjects(resKeys, m_file.get(), p, tClass);
+  }
+  std::vector<T*> res(resKeys.size());
+  for(auto& k : resKeys) {
+    res.emplace_back(dynamic_cast<T*>(k->ReadObj()));
+  }
+  return res;
+}
+
+template<class T>
+std::vector<T*> File::getObjects(const std::string& pattern) {
+  return getObjects<T>(std::vector<const std::string&>({pattern}));
+}
+

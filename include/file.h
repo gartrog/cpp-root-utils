@@ -2,8 +2,12 @@
 #define file_h
 
 #include <TFile.h>
+#include <TKey.h>
+#include <TClass.h>
+
 #include <string>
 #include <memory>
+#include <vector>
 
 class File
 {
@@ -20,10 +24,20 @@ class File
     // nice stuff
     TFile* operator->() const;
     TFile& operator*() const;
-    // template<class T> T* getObject(name)
-    // template<class T> vector<T*> getObjects(pattern)
-    // template<class T> vector<T*> getObjects(vector<pattern>)
+    template<class T>
+    T* getObject(const std::string& name);
+    template<class T>
+      std::vector<T*> getObjects(const std::string& pattern = ""); // if pattern empty, return all objects of type inheriting from T
+    template<class T>
+      std::vector<T*> getObjects(const std::vector<std::string>& patterns);
+
+    // can getObject also return kind of iterator... something like an iterator on TKeys, that ReadObj automatically when dereferenced ?
+
+  private:
+    void findObjects(std::vector<TKey*>& objs, TDirectory* dir, const std::string& pattern, TClass* objClass);
 
 };
+
+#include "file.icc"
 
 #endif
