@@ -4,7 +4,7 @@
 
 #include <regex>
 
-File::File(const std::string& name, const std::string& option) :
+File::File(const std::string& name, std::string option) :
   m_file(TFile::Open(name.c_str(), option.c_str()))
 {}
 

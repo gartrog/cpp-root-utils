@@ -13,7 +13,9 @@ std::vector<T*> File::getObjects(const std::vector<std::string>& patterns) {
   for(auto& p : patterns) {
     findObjects(resKeys, m_file.get(), p, tClass);
   }
-  std::vector<T*> res(resKeys.size());
+
+  std::vector<T*> res;
+  res.reserve(resKeys.size());
   for(auto& k : resKeys) {
     res.emplace_back(dynamic_cast<T*>(k->ReadObj()));
   }
@@ -22,6 +24,6 @@ std::vector<T*> File::getObjects(const std::vector<std::string>& patterns) {
 
 template<class T>
 std::vector<T*> File::getObjects(const std::string& pattern) {
-  return getObjects<T>(std::vector<const std::string&>({pattern}));
+  return getObjects<T>(std::vector<std::string>({pattern}));
 }
 

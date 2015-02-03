@@ -16,7 +16,7 @@ class File
 
   public:
     File() = delete;
-    File(const std::string& name, const std::string& option);
+    File(const std::string& name, std::string option="READ");
     File(const File&) = default;
     File(File&&) = default;
     ~File() = default;

@@ -1,0 +1,9 @@
+
+template<class T>
+std::map<std::string, T*> util::map(const std::vector<T*>& v) {
+  std::map<std::string, T*> res;
+  for(auto t: v) {
+    res.emplace(t->GetName(), t);
+  }
+}
+
