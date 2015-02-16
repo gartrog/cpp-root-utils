@@ -19,13 +19,14 @@ int Axis::nbins() const {
 
 
 
-Histos::Histos() : h1d(), h2d(), cut_type("") {
+Histos::Histos() : h1d(), h2d(), h3d(), cut_type("") {
   TH1::SetDefaultSumw2(true);
 }
 
 void Histos::reset() {
   h1d.clear();
   h2d.clear();
+  h3d.clear();
   cut_type = "";
 }
 
@@ -135,6 +136,9 @@ void Histos::saveHists(TFile* outf) {
     allHists.emplace(p.first, p.second);
   }
   for(auto& p : h2d) {
+    allHists.emplace(p.first, p.second);
+  }
+  for(auto& p : h3d) {
     allHists.emplace(p.first, p.second);
   }
   for(auto& p : allHists) {
