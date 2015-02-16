@@ -3,6 +3,7 @@
 #include <TList.h>
 
 #include <regex>
+#include <TPRegexp.h>
 
 File::File(const std::string& name, std::string option) :
   m_file(TFile::Open(name.c_str(), option.c_str()))
@@ -60,13 +61,15 @@ void File::findObjects(std::vector<TKey*>& objs, TDirectory* dir, const std::str
 
     // Case #3: there is a regexp to match
     else {
-      std::regex regexp(pattern);
+      //std::regex regexp(pattern);
+      TPRegexp regexp(pattern);
       TListIter it(dir->GetListOfKeys());
       TKey* k;
       while((k = (TKey*)(it.Next()))) {
         TClass* kclass = TClass::GetClass(k->GetClassName());
         if(kclass->InheritsFrom(objClass)) {
-          if(std::regex_match(k->GetName(), regexp)) {
+          //if(std::regex_match(k->GetName(), regexp)) {
+          if(regexp.Match(k->GetName())) {
             objs.emplace_back(k);
           }
         }
