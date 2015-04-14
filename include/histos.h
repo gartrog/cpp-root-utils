@@ -2,6 +2,7 @@
 #define libhistos_h
 
 #include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 
@@ -29,9 +30,9 @@ class Axis
 class Histos
 {
   private:
-    std::map<std::string, TH1F*> h1d;
-    std::map<std::string, TH2F*> h2d;
-    std::map<std::string, TH3F*> h3d;
+    std::unordered_map<std::string, TH1F*> h1d;
+    std::unordered_map<std::string, TH2F*> h2d;
+    std::unordered_map<std::string, TH3F*> h3d;
     std::string cut_type;
 
   public:

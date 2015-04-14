@@ -131,7 +131,7 @@ void Histos::fillCurrent3D(std::string tplt, float valuex, float valuey, float v
 void Histos::saveHists(TFile* outf) {
   outf->cd();
   // trick to write all histos in alphabetical order, regardless of type of hist.
-  std::map<std::string, TH1*> allHists;
+  std::unordered_map<std::string, TH1*> allHists;
   for(auto& p : h1d) {
     allHists.emplace(p.first, p.second);
   }
