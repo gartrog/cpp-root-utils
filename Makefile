@@ -4,6 +4,7 @@ ODIR=obj
 LDIR=lib
 BINDIR=bin
 SHAREDIR=share
+PYDIR=python
 
 SOLIBNAME  := Utils
 SOLIB = $(LDIR)/lib$(SOLIBNAME).so
@@ -26,9 +27,12 @@ lib_obj     = $(patsubst $(SDIR)/%, $(ODIR)/%, $(lib_obj_tmp))
 share_files = $(wildcard $(SHAREDIR)/*)
 share_files_bin = $(patsubst $(SHAREDIR)/%, $(BINDIR)/%, $(share_files))
 
+python_files = $(wildcard $(PYDIR)/*)
+python_files_bin = $(patsubst $(PYDIR)/%, $(BINDIR)/%, $(python_files))
+
 all : dirs bin so
 so : $(LDIR) $(DEPFILES) $(SOLIB)
-bin: $(share_files_bin)
+bin: $(share_files_bin) $(python_files_bin)
 
 dirs:
 	  mkdir -p $(ODIR)
@@ -45,6 +49,9 @@ $(ODIR)/%.o: $(SDIR)/%.cxx
 
 $(SOLIB): $(lib_obj)
 	$(LD) $(LDFLAGS) $^ $(ROOTLIBS) -o $@
+
+$(BINDIR)/%.py:
+	ln -sf $(patsubst $(BINDIR)/%, ../$(PYDIR)/%, $@) $@
 
 $(BINDIR)/%:
 	ln -sf $(patsubst $(BINDIR)/%, ../$(SHAREDIR)/%, $@) $@
