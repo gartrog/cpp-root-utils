@@ -3,6 +3,7 @@ SDIR=src
 ODIR=obj
 LDIR=lib
 BINDIR=bin
+SHAREDIR=share
 
 SOLIBNAME  := Utils
 SOLIB = $(LDIR)/lib$(SOLIBNAME).so
@@ -22,21 +23,16 @@ lib_src     = $(wildcard $(SDIR)/*.cxx)
 lib_obj_tmp = $(patsubst %.cxx, %.o, $(lib_src))
 lib_obj     = $(patsubst $(SDIR)/%, $(ODIR)/%, $(lib_obj_tmp))
 
-all : dir bin so
+share_files = $(wildcard $(SHAREDIR)/*)
+share_files_bin = $(patsubst $(SHAREDIR)/%, $(BINDIR)/%, $(share_files))
+
+all : dirs bin so
 so : $(LDIR) $(DEPFILES) $(SOLIB)
-dir : $(ODIR) $(LDIR)
-bin:
+bin: $(share_files_bin)
 
-$(ODIR)/%.o: $(SDIR)/%.cxx
-	$(CXX) -o $@ $< $(ROOTCFLAGS) $(CFLAGS)
-
-$(ODIR):
+dirs:
 	  mkdir -p $(ODIR)
-
-$(LDIR):
 	  mkdir -p $(LDIR)
-
-$(BINDIR):
 	  mkdir -p $(BINDIR)
 
 .PHONY: clean
@@ -44,6 +40,12 @@ $(BINDIR):
 clean:
 	rm -f $(ODIR)/*.o $(ODIR)/*.d $(ODIR)/*Dict* core* $(LDIR)/*.so *_C.so $(BINDIR)/*
 
+$(ODIR)/%.o: $(SDIR)/%.cxx
+	$(CXX) -o $@ $< $(ROOTCFLAGS) $(CFLAGS)
+
 $(SOLIB): $(lib_obj)
 	$(LD) $(LDFLAGS) $^ $(ROOTLIBS) -o $@
+
+$(BINDIR)/%:
+	ln -sf $(patsubst $(BINDIR)/%, ../$(SHAREDIR)/%, $@) $@
 

@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+
+script=${0/bin/scripts}
+if [ "$#" -eq 2 ];
+then
+  root -l $script'.C("'$1'", "'$2'")'
+else
+  root -l $script'.C("'$1'")'
+fi
+
