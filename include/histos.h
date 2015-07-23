@@ -1,7 +1,6 @@
 #ifndef libhistos_h
 #define libhistos_h
 
-#include <map>
 #include <unordered_map>
 #include <string>
 #include <vector>

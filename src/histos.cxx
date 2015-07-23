@@ -1,4 +1,5 @@
 #include "histos.h"
+#include <map>
 
 Axis::Axis(int n, float low, float high) : m_bins(n+1) {
   for(int i = 0; i <= n; i++)
@@ -135,7 +136,7 @@ void Histos::fillCurrent3D(std::string tplt, float valuex, float valuey, float v
 void Histos::saveHists(TFile* outf) {
   outf->cd();
   // trick to write all histos in alphabetical order, regardless of type of hist.
-  std::unordered_map<std::string, TH1*> allHists;
+  std::map<std::string, TH1*> allHists;
   for(auto& p : h1d) {
     allHists.emplace(p.first, p.second);
   }
