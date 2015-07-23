@@ -14,16 +14,22 @@ class Axis
 {
   private:
     std::vector<float> m_bins;
+    std::vector<std::string> m_labels;
 
   public:
     Axis(int n, float low, float high);
     Axis(const std::vector<float>& bins);
+    Axis(const std::vector<std::string>& bins);
     Axis() = delete;
     Axis(const Axis&) = default;
     Axis(Axis&&) = default;
 
     const float* data() const;
     int nbins() const;
+    bool hasLabels() const;
+    const std::vector<std::string>& labels() const;
+
+    static void setLabels(TAxis* axis, const Axis& a);
 };
 
 class Histos
@@ -45,17 +51,26 @@ class Histos
     void copyHisto(std::string tplt, std::string name = "");
     void fill(std::string name, float value, float weight = 1);
     void fillCurrent(std::string tplt, float value, float weight = 1);
+    void fill(std::string name, const std::string& binname, float weight = 1);
+    void fillCurrent(std::string tplt, const std::string& binname, float weight = 1);
 
     void addHisto2D(std::string title, const Axis& ax, const Axis& ay);
     void addHisto2DSym(std::string title, const Axis& a);
     void copyHisto2D(std::string tplt, std::string name = "");
     void fill2D(std::string name, float valuex, float valuey, float weight = 1);
     void fillCurrent2D(std::string tplt, float valuex, float valuey, float weight = 1);
+    void fill2D(std::string name, const std::string& binnamex, float valuey, float weight = 1);
+    void fillCurrent2D(std::string tplt, const std::string& binnamex, float valuey, float weight = 1);
+    void fill2D(std::string name, float valuex, const std::string& binnamey, float weight = 1);
+    void fillCurrent2D(std::string tplt, float valuex, const std::string& binnamey, float weight = 1);
+    void fill2D(std::string name, const std::string& binnamex, const std::string& binnamey, float weight = 1);
+    void fillCurrent2D(std::string tplt, const std::string& binnamex, const std::string& binnamey, float weight = 1);
 
     void addHisto3D(std::string title, const Axis& ax, const Axis& ay, const Axis& az);
     void copyHisto3D(std::string tplt, std::string name = "");
     void fill3D(std::string name, float valuex, float valuey, float valuez, float weight = 1);
     void fillCurrent3D(std::string tplt, float valuex, float valuey, float valuez, float weight = 1);
+    // TODO fill with bin labels
 
     void saveHists(TFile* outf);
 
