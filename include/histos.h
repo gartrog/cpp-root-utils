@@ -44,36 +44,41 @@ class Histos
     Histos();
     ~Histos() = default;
     void reset();
-    void setCut(std::string cut);
+    void setCut(const std::string& cut);
     std::string getCut() const;
 
-    void addHisto(std::string title, const Axis& a);
-    void copyHisto(std::string tplt, std::string name = "");
-    void fill(std::string name, float value, float weight = 1);
-    void fillCurrent(std::string tplt, float value, float weight = 1);
-    void fill(std::string name, const std::string& binname, float weight = 1);
-    void fillCurrent(std::string tplt, const std::string& binname, float weight = 1);
+    void addHisto(const std::string& title, const Axis& a);
+    void copyHisto(const std::string& tplt, std::string name = "");
+    void fill(const std::string& name, float value, float weight = 1);
+    void fillCurrent(const std::string& tplt, float value, float weight = 1);
+    void fill(const std::string& name, const std::string& binname, float weight = 1);
+    void fillCurrent(const std::string& tplt, const std::string& binname, float weight = 1);
 
-    void addHisto2D(std::string title, const Axis& ax, const Axis& ay);
-    void addHisto2DSym(std::string title, const Axis& a);
-    void copyHisto2D(std::string tplt, std::string name = "");
-    void fill2D(std::string name, float valuex, float valuey, float weight = 1);
-    void fillCurrent2D(std::string tplt, float valuex, float valuey, float weight = 1);
-    void fill2D(std::string name, const std::string& binnamex, float valuey, float weight = 1);
-    void fillCurrent2D(std::string tplt, const std::string& binnamex, float valuey, float weight = 1);
-    void fill2D(std::string name, float valuex, const std::string& binnamey, float weight = 1);
-    void fillCurrent2D(std::string tplt, float valuex, const std::string& binnamey, float weight = 1);
-    void fill2D(std::string name, const std::string& binnamex, const std::string& binnamey, float weight = 1);
-    void fillCurrent2D(std::string tplt, const std::string& binnamex, const std::string& binnamey, float weight = 1);
+    void addHisto2D(const std::string& title, const Axis& ax, const Axis& ay);
+    void addHisto2DSym(const std::string& title, const Axis& a);
+    void copyHisto2D(const std::string& tplt, std::string name = "");
+    void fill2D(const std::string& name, float valuex, float valuey, float weight = 1);
+    void fillCurrent2D(const std::string& tplt, float valuex, float valuey, float weight = 1);
+    void fill2D(const std::string& name, const std::string& binnamex, float valuey, float weight = 1);
+    void fillCurrent2D(const std::string& tplt, const std::string& binnamex, float valuey, float weight = 1);
+    void fill2D(const std::string& name, float valuex, const std::string& binnamey, float weight = 1);
+    void fillCurrent2D(const std::string& tplt, float valuex, const std::string& binnamey, float weight = 1);
+    void fill2D(const std::string& name, const std::string& binnamex, const std::string& binnamey,
+                float weight = 1);
+    void fillCurrent2D(const std::string& tplt, const std::string& binnamex, const std::string& binnamey,
+                       float weight = 1);
 
-    void addHisto3D(std::string title, const Axis& ax, const Axis& ay, const Axis& az);
-    void copyHisto3D(std::string tplt, std::string name = "");
-    void fill3D(std::string name, float valuex, float valuey, float valuez, float weight = 1);
-    void fillCurrent3D(std::string tplt, float valuex, float valuey, float valuez, float weight = 1);
+    void addHisto3D(const std::string& title, const Axis& ax, const Axis& ay, const Axis& az);
+    void copyHisto3D(const std::string& tplt, std::string name = "");
+    void fill3D(const std::string& name, float valuex, float valuey, float valuez, float weight = 1);
+    void fillCurrent3D(const std::string& tplt, float valuex, float valuey, float valuez, float weight = 1);
     // TODO fill with bin labels
 
     void saveHists(TFile* outf);
 
+  private:
+    void copyIfNotExists(const std::string& name);
+    void copyIfNotExists2D(const std::string& name);
 };
 
 #endif

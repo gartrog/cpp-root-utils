@@ -53,7 +53,7 @@ void Histos::reset() {
   cut_type = "";
 }
 
-void Histos::setCut(std::string cut) {
+void Histos::setCut(const std::string& cut) {
   cut_type = cut;
 }
 
@@ -61,7 +61,7 @@ std::string Histos::getCut() const {
   return cut_type;
 }
 
-void Histos::addHisto(std::string title, const Axis& a) {
+void Histos::addHisto(const std::string& title, const Axis& a) {
   std::string name = title.substr(0, title.find_first_of(';'));
   TH1F* h = new TH1F(name.c_str(), title.c_str(), a.nbins(), a.data());
   h->SetDirectory(0);
@@ -69,7 +69,7 @@ void Histos::addHisto(std::string title, const Axis& a) {
   h1d[name] = h;
 }
 
-void Histos::copyHisto(std::string tplt, std::string name) {
+void Histos::copyHisto(const std::string& tplt, std::string name) {
   if(name == "") {
     name = cut_type+"_"+tplt;
   }
@@ -80,31 +80,32 @@ void Histos::copyHisto(std::string tplt, std::string name) {
   h1d[name] = h;
 }
 
-void Histos::fill(std::string name, float value, float weight){
+void Histos::copyIfNotExists(const std::string& name) {
   if(h1d.find(name) == h1d.end()) {
     std::string tplt = name.substr(name.find_last_of('_')+1);
     copyHisto(tplt, name);
   }
+}
+
+void Histos::fill(const std::string& name, float value, float weight){
+  copyIfNotExists(name);
   h1d[name]->Fill(value, weight);
 }
 
-void Histos::fillCurrent(std::string tplt, float value, float weight) {
+void Histos::fillCurrent(const std::string& tplt, float value, float weight) {
   fill(cut_type+"_"+tplt, value, weight);
 }
 
-void Histos::fill(std::string name, const std::string& binname, float weight){
-  if(h1d.find(name) == h1d.end()) {
-    std::string tplt = name.substr(name.find_last_of('_')+1);
-    copyHisto(tplt, name);
-  }
+void Histos::fill(const std::string& name, const std::string& binname, float weight){
+  copyIfNotExists(name);
   h1d[name]->Fill(binname.c_str(), weight);
 }
 
-void Histos::fillCurrent(std::string tplt, const std::string& binname, float weight) {
+void Histos::fillCurrent(const std::string& tplt, const std::string& binname, float weight) {
   fill(cut_type+"_"+tplt, binname, weight);
 }
 
-void Histos::addHisto2D(std::string title, const Axis& ax, const Axis& ay) {
+void Histos::addHisto2D(const std::string& title, const Axis& ax, const Axis& ay) {
   std::string name = title.substr(0, title.find_first_of(';'));
   TH2F* h = new TH2F(name.c_str(), title.c_str(), ax.nbins(), ax.data(), ay.nbins(), ay.data());
   h->SetDirectory(0);
@@ -113,11 +114,11 @@ void Histos::addHisto2D(std::string title, const Axis& ax, const Axis& ay) {
   h2d[name] = h;
 }
 
-void Histos::addHisto2DSym(std::string title, const Axis& a) {
+void Histos::addHisto2DSym(const std::string& title, const Axis& a) {
   addHisto2D(title, a, a);
 }
 
-void Histos::copyHisto2D(std::string tplt, std::string name) {
+void Histos::copyHisto2D(const std::string& tplt, std::string name) {
   if(name == "") {
     name = cut_type+"_"+tplt;
   }
@@ -128,64 +129,60 @@ void Histos::copyHisto2D(std::string tplt, std::string name) {
   h2d[name] = h;
 }
 
-void Histos::fill2D(std::string name, float valuex, float valuey, float weight) {
+void Histos::copyIfNotExists2D(const std::string& name) {
   if(h2d.find(name) == h2d.end()) {
     std::string tplt = name.substr(name.find_last_of('_')+1);
     copyHisto2D(tplt, name);
   }
+}
+
+void Histos::fill2D(const std::string& name, float valuex, float valuey, float weight) {
+  copyHisto2D(name);
   h2d[name]->Fill(valuex, valuey, weight);
 }
 
-void Histos::fillCurrent2D(std::string tplt, float valuex, float valuey, float weight) {
+void Histos::fillCurrent2D(const std::string& tplt, float valuex, float valuey, float weight) {
   fill2D(cut_type+"_"+tplt, valuex, valuey, weight);
 }
 
-void Histos::fill2D(std::string name, const std::string& binnamex, float valuey, float weight) {
-  if(h2d.find(name) == h2d.end()) {
-    std::string tplt = name.substr(name.find_last_of('_')+1);
-    copyHisto2D(tplt, name);
-  }
+void Histos::fill2D(const std::string& name, const std::string& binnamex, float valuey, float weight) {
+  copyHisto2D(name);
   h2d[name]->Fill(binnamex.c_str(), valuey, weight);
 }
 
-void Histos::fillCurrent2D(std::string tplt, const std::string& binnamex, float valuey, float weight) {
+void Histos::fillCurrent2D(const std::string& tplt, const std::string& binnamex, float valuey, float weight) {
   fill2D(cut_type+"_"+tplt, binnamex, valuey, weight);
 }
 
-void Histos::fill2D(std::string name, float valuex, const std::string& binnamey, float weight) {
-  if(h2d.find(name) == h2d.end()) {
-    std::string tplt = name.substr(name.find_last_of('_')+1);
-    copyHisto2D(tplt, name);
-  }
+void Histos::fill2D(const std::string& name, float valuex, const std::string& binnamey, float weight) {
+  copyHisto2D(name);
   h2d[name]->Fill(valuex, binnamey.c_str(), weight);
 }
 
-void Histos::fillCurrent2D(std::string tplt, float valuex, const std::string& binnamey, float weight) {
+void Histos::fillCurrent2D(const std::string& tplt, float valuex, const std::string& binnamey, float weight) {
   fill2D(cut_type+"_"+tplt, valuex, binnamey, weight);
 }
 
-void Histos::fill2D(std::string name, const std::string& binnamex,
+void Histos::fill2D(const std::string& name, const std::string& binnamex,
                     const std::string& binnamey, float weight) {
-  if(h2d.find(name) == h2d.end()) {
-    std::string tplt = name.substr(name.find_last_of('_')+1);
-    copyHisto2D(tplt, name);
-  }
+  copyHisto2D(name);
   h2d[name]->Fill(binnamex.c_str(), binnamey.c_str(), weight);
 }
 
-void Histos::fillCurrent2D(std::string tplt, const std::string& binnamex,
+void Histos::fillCurrent2D(const std::string& tplt, const std::string& binnamex,
                            const std::string& binnamey, float weight) {
   fill2D(cut_type+"_"+tplt, binnamex, binnamey, weight);
 }
 
-void Histos::addHisto3D(std::string title, const Axis& ax, const Axis& ay, const Axis& az) {
+void Histos::addHisto3D(const std::string& title, const Axis& ax, const Axis& ay, const Axis& az) {
   std::string name = title.substr(0, title.find_first_of(';'));
-  TH3F* h = new TH3F(name.c_str(), title.c_str(), ax.nbins(), ax.data(), ay.nbins(), ay.data(), az.nbins(), az.data());
+  TH3F* h = new TH3F(name.c_str(), title.c_str(), ax.nbins(), ax.data(),
+                     ay.nbins(), ay.data(), az.nbins(), az.data());
   h->SetDirectory(0);
   h3d[name] = h;
 }
 
-void Histos::copyHisto3D(std::string tplt, std::string name) {
+void Histos::copyHisto3D(const std::string& tplt, std::string name) {
   if(name == "") {
     name = cut_type+"_"+tplt;
   }
@@ -196,7 +193,7 @@ void Histos::copyHisto3D(std::string tplt, std::string name) {
   h3d[name] = h;
 }
 
-void Histos::fill3D(std::string name, float valuex, float valuey, float valuez, float weight) {
+void Histos::fill3D(const std::string& name, float valuex, float valuey, float valuez, float weight) {
   if(h3d.find(name) == h3d.end()) {
     std::string tplt = name.substr(name.find_last_of('_')+1);
     copyHisto3D(tplt, name);
@@ -204,7 +201,7 @@ void Histos::fill3D(std::string name, float valuex, float valuey, float valuez, 
   h3d[name]->Fill(valuex, valuey, valuez, weight);
 }
 
-void Histos::fillCurrent3D(std::string tplt, float valuex, float valuey, float valuez, float weight) {
+void Histos::fillCurrent3D(const std::string& tplt, float valuex, float valuey, float valuez, float weight) {
   fill3D(cut_type+"_"+tplt, valuex, valuey, valuez, weight);
 }
 
