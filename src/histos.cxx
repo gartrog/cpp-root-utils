@@ -34,6 +34,10 @@ void Histos::setCut(std::string cut) {
   cut_type = cut;
 }
 
+std::string Histos::getCut() const {
+  return cut_type;
+}
+
 void Histos::addHisto(std::string title, const Axis& a) {
   std::string name = title.substr(0, title.find_first_of(';'));
   TH1F* h = new TH1F(name.c_str(), title.c_str(), a.nbins(), a.data());

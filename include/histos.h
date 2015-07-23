@@ -40,6 +40,7 @@ class Histos
     ~Histos() = default;
     void reset();
     void setCut(std::string cut);
+    std::string getCut() const;
 
     void addHisto(std::string title, const Axis& a);
     void copyHisto(std::string tplt, std::string name = "");
