@@ -137,7 +137,7 @@ void Histos::copyIfNotExists2D(const std::string& name) {
 }
 
 void Histos::fill2D(const std::string& name, float valuex, float valuey, float weight) {
-  copyHisto2D(name);
+  copyIfNotExists2D(name);
   h2d[name]->Fill(valuex, valuey, weight);
 }
 
@@ -146,7 +146,7 @@ void Histos::fillCurrent2D(const std::string& tplt, float valuex, float valuey, 
 }
 
 void Histos::fill2D(const std::string& name, const std::string& binnamex, float valuey, float weight) {
-  copyHisto2D(name);
+  copyIfNotExists2D(name);
   h2d[name]->Fill(binnamex.c_str(), valuey, weight);
 }
 
@@ -155,7 +155,7 @@ void Histos::fillCurrent2D(const std::string& tplt, const std::string& binnamex,
 }
 
 void Histos::fill2D(const std::string& name, float valuex, const std::string& binnamey, float weight) {
-  copyHisto2D(name);
+  copyIfNotExists2D(name);
   h2d[name]->Fill(valuex, binnamey.c_str(), weight);
 }
 
@@ -165,7 +165,7 @@ void Histos::fillCurrent2D(const std::string& tplt, float valuex, const std::str
 
 void Histos::fill2D(const std::string& name, const std::string& binnamex,
                     const std::string& binnamey, float weight) {
-  copyHisto2D(name);
+  copyIfNotExists2D(name);
   h2d[name]->Fill(binnamex.c_str(), binnamey.c_str(), weight);
 }
 
