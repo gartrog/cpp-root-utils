@@ -74,7 +74,7 @@ class Histos
     void fillCurrent3D(const std::string& tplt, float valuex, float valuey, float valuez, float weight = 1);
     // TODO fill with bin labels
 
-    void saveHists(TFile* outf);
+    void saveHists(TFile* outf, bool removeEmptyHists=false);
 
   private:
     void copyIfNotExists(const std::string& name);
