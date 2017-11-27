@@ -1,6 +1,7 @@
 #include "utils.h"
 #include <TROOT.h>
 #include <TMath.h>
+#include <TString.h>
 
 
 std::string util::replace_first_of(const std::string& in, const std::string& patt, const std::string& rep) {
